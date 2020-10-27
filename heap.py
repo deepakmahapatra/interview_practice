@@ -77,3 +77,40 @@ class MinHeap(BaseHeap):
         self.swap(0, self.count-1)
         self.heap.pop()
         self.shift_down(0)
+
+    def find_max_in_minheap(self):
+        """
+        One of the leaf nodes has to be maximum
+        find the first leaf node, see contiguous elements
+        the first leaf comes after the last internal node
+        :return:
+        """
+        last_index = self.count - 1
+        last_parent_index = self.get_parent_index(last_index)
+
+        first_child_index = last_parent_index + 1
+
+        max_element = self.heap[first_child_index]
+
+        for i in range(first_child_index,last_index+1):
+            if max_element < self.heap[i]:
+                max_element = self.heap[i]
+        return max_element
+
+def find_largest_in_stream(stream , k):
+    """
+    use a min heap with size k to store elements as they come in
+    :return:
+    """
+    heap = MinHeap(k)
+    for i in stream:
+        if heap.is_empty():
+            heap.insert(i)
+        elif heap.get_highest_priority() < i:
+            if heap.is_full():
+                heap.delete_head()
+            heap.insert(i)
+
+
+
+
