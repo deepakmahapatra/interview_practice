@@ -22,7 +22,7 @@ class BaseHeap:
         return self.count == 0
 
     def is_full(self):
-        return self.count == len(self.heap)
+        return self.count == self.maxsize
 
     def swap(self, index1, index2):
         temp = self.heap[index1]
@@ -37,8 +37,12 @@ class BaseHeap:
 
 
 class MinHeap(BaseHeap):
-    def __init__(self, maxsize):
+    def __init__(self, maxsize, compare=None):
         super(MinHeap, self).__init__(maxsize)
+        if compare:
+            self.compare = compare
+        else:
+            self.compare = lambda x, y: True if x < y else False
 
     def shift_down(self, index):
         left_index = self.get_left_index(index)
@@ -47,7 +51,7 @@ class MinHeap(BaseHeap):
         smaller_index = -1
 
         if left_index != -1 and right_index != -1:
-            smaller_index = self.heap[left_index] if self.heap[left_index] < self.heap[right_index] else self.heap[right_index]
+            smaller_index = left_index if self.compare(self.heap[left_index], self.heap[right_index]) else right_index
         elif left_index != -1:
             smaller_index = left_index
         elif right_index != -1:
@@ -55,7 +59,7 @@ class MinHeap(BaseHeap):
 
         if smaller_index == -1:
             return
-        if self.heap[smaller_index] < self.heap[index]:
+        if self.compare(self.heap[smaller_index], self.heap[index]):
             self.swap(smaller_index, index)
             self.shift_down(smaller_index)
 
@@ -66,7 +70,7 @@ class MinHeap(BaseHeap):
             self.shift_up(parent_index)
 
     def insert(self, node):
-        if self.count == len(self.heap):
+        if self.count == self.maxsize:
             raise Exception
         self.heap.append(node)
         self.count = len(self.heap)
@@ -76,6 +80,7 @@ class MinHeap(BaseHeap):
     def delete_head(self):
         self.swap(0, self.count-1)
         self.heap.pop()
+        self.count -= 1
         self.shift_down(0)
 
     def find_max_in_minheap(self):
@@ -97,12 +102,14 @@ class MinHeap(BaseHeap):
                 max_element = self.heap[i]
         return max_element
 
-def find_largest_in_stream(stream , k):
+
+def find_largest_in_stream(stream, k):
     """
     use a min heap with size k to store elements as they come in
     :return:
     """
     heap = MinHeap(k)
+    result_list = []
     for i in stream:
         if heap.is_empty():
             heap.insert(i)
@@ -110,6 +117,45 @@ def find_largest_in_stream(stream , k):
             if heap.is_full():
                 heap.delete_head()
             heap.insert(i)
+    while heap.count != 0:
+        result_list.append(heap.get_highest_priority())
+        heap.delete_head()
+    return result_list
+
+def merge_k_sorted_array(input, total_items):
+    class Node:
+        def __init__(self, data, list_index):
+            self.data = data
+            self.list_index = list_index
+    result = list()
+
+    def compare(left, right):
+        return left.data < right.data
+
+    heap = MinHeap(len(input), compare)
+    for index, list_itmes in enumerate(input):
+        heap.insert(Node(list_itmes.pop(0), index))
+
+    while len(result) < total_items:
+        element = heap.get_highest_priority()
+        heap.delete_head()
+        result.append(element.data)
+        if input[element.list_index]:
+            heap.insert(Node(input[element.list_index].pop(0), element.list_index))
+    return result
+
+def median_of_stream(input):
+    pass
+
+
+
+if __name__ == '__main__':
+    lists = [[1, 2], [3, 4, 5], [3, 9, 12]]
+    result = merge_k_sorted_array(lists, 8)
+    result2 = find_largest_in_stream([1,2,3,22,3,5,6,1,33], 3)
+
+    print(result)
+    print(result2)
 
 
 
