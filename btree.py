@@ -152,3 +152,12 @@ class Btree:
         if left_lca:
             return left_lca
         return right_lca
+
+    def deepest_leaf_sum(self, node):
+        if not node:
+            return 0
+        queue = [node]
+        previous_level = []
+        while queue:
+            previous_level, queue = queue, [child for prev in queue for child in [prev.left, prev.right] if child]
+        return sum(node.val for node in previous_level)

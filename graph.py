@@ -32,14 +32,32 @@ class AdjacencyMatrixGraph(Graph):
         return adjacent
 
 
+
+
 def depth_first_traversal(graph: AdjacencyMatrixGraph, current_vertex, visited: set):
     if current_vertex in visited:
         return
     visited.add(current_vertex)
+    print(current_vertex)
     list_adjacent = graph.get_adjacent_vertices(current_vertex)
     for vertex in list_adjacent:
         depth_first_traversal(graph, vertex, visited)
-    print(current_vertex, "^")
+
+
+
+def depth_first_traversal_non_recursive(graph: AdjacencyMatrixGraph, current_vertex):
+    visited = set()
+    visited.add(current_vertex)
+    adjacent = list()
+    adjacent.extend(graph.get_adjacent_vertices(current_vertex))
+    print(current_vertex)
+    while adjacent:
+        temp_node = adjacent.pop()
+        if temp_node not in visited:
+            adjacent.extend(graph.get_adjacent_vertices(temp_node))
+            visited.add(temp_node)
+            print(temp_node)
+
 
 
 def breadth_first_traversal(graph: AdjacencyMatrixGraph, current_vertex):
@@ -58,6 +76,10 @@ def breadth_first_traversal(graph: AdjacencyMatrixGraph, current_vertex):
                 queue.append(v)
 
 
+def topological_sort():
+    pass
+
+
 if __name__ == '__main__':
     graph = AdjacencyMatrixGraph(6, "undirected")
     graph.add_edge(0, 1)
@@ -67,5 +89,7 @@ if __name__ == '__main__':
     graph.add_edge(2, 5)
     graph.add_edge(4, 5)
     depth_first_traversal(graph, 1, set())
+    print()
+    depth_first_traversal_non_recursive(graph, 1)
     print()
     breadth_first_traversal(graph, 1)
