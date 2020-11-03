@@ -44,8 +44,8 @@ class Solution(object):
         left = self.maxPathSumHelper(node.left)
         right = self.maxPathSumHelper(node.right)
 
-        left = 0 if not left else (left if left >0 else 0)
-        right = 0 if not right else (right if right >0 else 0)
+        left = 0 if not left else (left if left > 0 else 0)
+        right = 0 if not right else (right if right > 0 else 0)
         self.current_max = max(self.current_max, node.val + left + right)
         return max(left, right) + node.val
 
