@@ -60,25 +60,26 @@ def min_add_to_make_valid(S):
         if right == -1:
             left += 1
             right += 1
+    print(left, right)
     return left + right
 
 
-def min_add_to_make_valid1(s):
-    # n = s.length
-    curr_sum = 0
-    summ_track = 0
-
-    for i in s:
-        if i=="(":
-            curr_sum+=1
-            summ_track+=1
-        else:
-            if summ_track<=0:
-                curr_sum+=1
-            else:
-                summ_track-=1
-                curr_sum-=1
-    return curr_sum
+# def min_add_to_make_valid1(s):
+#     # n = s.length
+#     curr_sum = 0
+#     summ_track = 0
+#
+#     for i in s:
+#         if i=="(":
+#             curr_sum+=1
+#             summ_track+=1
+#         else:
+#             if summ_track<=0:
+#                 curr_sum+=1
+#             else:
+#                 summ_track-=1
+#                 curr_sum-=1
+#     return curr_sum
 
 def merge(A, B):
     start_a, start_b = 0, 0
@@ -99,6 +100,22 @@ def merge(A, B):
         start_b += 1
     return result
 
+def is_matched_expression(expr):
+    result = list()
+    left = '({['
+    right = ')}]'
+    for char in expr:
+        if char in left:
+            result.append(char)
+        elif char in right:
+            if len(result) == 0:
+                return False
+            if right.index(char) != left.index(result.pop()):
+                return False
+    return len(result) == 0
+
 if __name__ == "__main__":
-    # print(min_add_to_make_valid1("())))("))
+    print(min_add_to_make_valid("())))()"))
     print(merge([-4, 3], [-2, -2 ]))
+    print(is_matched_expression("{}]"))
+    print(is_matched_expression("[{}()]"))
