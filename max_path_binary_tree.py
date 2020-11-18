@@ -49,3 +49,21 @@ class Solution(object):
         self.current_max = max(self.current_max, node.val + left + right)
         return max(left, right) + node.val
 
+    def least_root_to_leaf_path(self, node):
+        queue = [node]
+        while queue:
+            queue = [child for node in queue for child in [node.left, node.right] if child]
+
+    def bst_from_preorder(self, preorder: list) -> TreeNode:
+        root = TreeNode(preorder[0])
+        stack = [root]
+        for value in preorder[1:]:
+            if value < stack[-1].val:
+                stack[-1].left = TreeNode(value)
+                stack.append(stack[-1].left)
+            else:
+                while stack and stack[-1].val < value:
+                    last = stack.pop()
+                last.right = TreeNode(value)
+                stack.append(last.right)
+        return root
