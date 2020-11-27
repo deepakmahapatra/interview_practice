@@ -46,5 +46,28 @@ class LFUCache:
         return
 
 
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_to_node = collections.OrderedDict()
+
+    def get(self, key):
+        if key not in self.key_to_node:
+            return None
+        self.key_to_node.move_to_end(key)
+        return self.key_to_node[key]
+
+    def put(self, key, value):
+        if self.capacity == len(self.key_to_node):
+            return
+        if key in self.key_to_node:
+            self.key_to_node[key] = value
+            self.get(key)
+            return
+        if len(self.key_to_node) == self.capacity:
+            self.key_to_node.popitem(last=False)
+        self.key_to_node[key] = value
+        return
+
 
 
