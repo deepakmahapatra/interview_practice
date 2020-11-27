@@ -47,7 +47,7 @@ class Btree:
 
     def get_max_depth(self, head):
         if not head:
-            return  0
+            return 0
         if not head.left and not head.right:
             return 0
         left_max = 1 + self.get_max_depth(head.left)

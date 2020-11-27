@@ -34,15 +34,15 @@ class TreeNode(object):
 class Solution(object):
     current_max = float('-inf')
 
-    def maxPathSum(self, root):
-        self.maxPathSumHelper(root)
+    def max_path_sum(self, root):
+        self.max_path_sum_helper(root)
         return self.current_max
 
-    def maxPathSumHelper(self, node):
+    def max_path_sum_helper(self, node):
         if not node:
             return node
-        left = self.maxPathSumHelper(node.left)
-        right = self.maxPathSumHelper(node.right)
+        left = self.max_path_sum_helper(node.left)
+        right = self.max_path_sum_helper(node.right)
 
         left = 0 if not left else (left if left > 0 else 0)
         right = 0 if not right else (right if right > 0 else 0)
