@@ -177,41 +177,113 @@ class Solution:
                 res[pos] = item
         return res
 
-    def distinct_subsequences(self, sequence1, sequence2):
-        """
-        Given two sequences A, B, count number of unique ways in sequence A, to form a subsequence that is identical
-        to the sequence B.
+    @staticmethod
+    def longest_subsequence_dp(array):
+        longest = [1] * len(array)
+        if not array:
+            return 0
+        maximum = 1
+        for i in range(1, len(array)):
+            for j in range(i):
+                if array[i] > array[j]:
+                    longest[i] = max(longest[j] + 1, longest[i])
+                    maximum = max(longest[i], maximum)
+        return maximum
 
-        Subsequence : A subsequence of a string is a new string which is formed from the original string by deleting
-        some (can be none) of the characters without disturbing the relative positions of the remaining characters.
-        (ie, “ACE” is a subsequence of “ABCDE” while “AEC” is not).
 
-        Input Format:
+def distinct_subsequences(sequence1, sequence2):
+    """
+    Given two sequences A, B, count number of unique ways in sequence A, to form a subsequence that is identical
+    to the sequence B.
 
-        The first argument of input contains a string, A.
-        The second argument of input contains a string, B.
-        Output Format:
+    Subsequence : A subsequence of a string is a new string which is formed from the original string by deleting
+    some (can be none) of the characters without disturbing the relative positions of the remaining characters.
+    (ie, “ACE” is a subsequence of “ABCDE” while “AEC” is not).
 
-        Return an integer representing the answer as described in the problem statement.
-        Constraints:
+    Input Format:
 
-        1 <= length(A), length(B) <= 700
-        :param sequence:
-        :return:
-        """
-        len1 = len(sequence1)
-        len2 = len(sequence2)
-        matrix = [[0 for i in range(len1 + 1)] for j in range(len2 + 1)]
-        for i in range(len1+1):
-            matrix[0][i] = 1
-        for index2 in range(len2+1):
-            for index1 in range(len1+1):
-                if index2 == 1 and index1 == 1:
-                    if sequence2[index2 - 1] == sequence1[index1 - 1]:
-                        matrix[index2][index1] = 1
+    The first argument of input contains a string, A.
+    The second argument of input contains a string, B.
+    Output Format:
+
+    Return an integer representing the answer as described in the problem statement.
+    Constraints:
+
+    1 <= length(A), length(B) <= 700
+    :param sequence:
+    :return:
+    """
+    len1 = len(sequence1)
+    len2 = len(sequence2)
+    matrix = [[0 for i in range(len1 + 1)] for j in range(len2 + 1)]
+    for i in range(1, len1 + 1):
+        matrix[0][i] = 1
+    for index2 in range(1, len2 + 1):
+        for index1 in range(1, len1 + 1):
+            if index2 == 1 and index1 == 1:
+                if sequence2[index2 - 1] == sequence1[index1 - 1]:
+                    matrix[index2][index1] = 1
+            else:
+                if sequence2[index2 - 1] == sequence1[index1 - 1]:
+                    matrix[index2][index1] = matrix[index2][index1 - 1] + matrix[index2 - 1][index1 - 1]
                 else:
-                    if sequence2[index2-1] == sequence1[index1-1]:
-                        matrix[index2][index1] = matrix[index2][index1 - 1] + matrix[index2 - 1][index1 - 1]
-                    else:
-                        matrix[index2][index1] = matrix[index2][index1-1]
-        return matrix[len2][len1]
+                    matrix[index2][index1] = matrix[index2][index1 - 1]
+    return matrix[len2][len1]
+
+
+def distinct_subsequences2(S, T):
+    m = len(T)
+    n = len(S)
+    mat = [[0 for _ in range(n+1)] for _ in range(m+1)]
+    for i in range(n+1):
+        mat[0][i] = 1
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if T[i-1] != S[j-1]:
+                mat[i][j] = mat[i][j-1]
+            else:
+                mat[i][j] = mat[i-1][j-1] + mat[i][j-1]
+    return mat[m][n]
+
+
+def unique_paths(input_arr):
+    """
+    Given a grid of size m * n, lets assume you are starting at (1,1) and your goal is to reach (m,n). At any instance, if you are on (x,y), you can either go to (x, y + 1) or (x + 1, y).
+
+    Now consider if some obstacles are added to the grids. How many unique paths would there be?
+    An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+
+    Example :
+    There is one obstacle in the middle of a 3x3 grid as illustrated below.
+
+    [
+      [0,0,0],
+      [0,1,0],
+      [0,0,0]
+    ]
+    The total number of unique paths is 2.
+
+
+    :param input_arr:
+    :return:
+    """
+    dp = [[0]*len(input_arr[0])]*len(input_arr)
+    # if input_arr[0][0] == 0:
+    #     dp[0][0] = 1
+    # for i in range(1, len(input_arr)):
+    #     if input_arr[i][0] == 0:
+    #         dp[i][0] = dp[i-1][0]
+    # for j in range(1, len(input_arr[0])):
+    #     if input_arr[0][j] == 0:
+    #         dp[0][j] = dp[0][j-1]
+    # for i in range(1, len(input_arr)):
+    #     for j in range(1, len(input_arr[0])):
+    #         if input_arr[i][j] == 0:
+    #             dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp
+
+
+if __name__ == '__main__':
+    print(distinct_subsequences2("abcde", "ab"))
+    print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]
+))
