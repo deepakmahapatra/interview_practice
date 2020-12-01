@@ -283,6 +283,79 @@ def unique_paths(input_arr):
     return dp
 
 
+def max_product(arr):
+    """
+    Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+    Return an integer corresponding to the maximum product possible.
+
+    Example :
+
+    Input : [2, 3, -2, 4]
+    Return : 6
+
+    Possible with [2, 3]
+    :param self:
+    :param A:
+    :return:
+    """
+    mnegative = 1
+    mpositive = 1
+    ans = arr[0]
+    for i in arr:
+        mnegative, mpositive = min(i, i*mpositive, i*mnegative), max(i, i*mnegative, i*mpositive)
+        ans = max(ans, mnegative, mpositive)
+    return ans
+
+
+def possible_decodings(arr):
+    """
+    Problem Description
+    A message containing letters from A-Z is being encoded to numbers using the following mapping:
+     'A' -> 1
+     'B' -> 2
+     ...
+     'Z' -> 26
+    Given an encoded message A containing digits, determine the total number of ways to decode it modulo 109 + 7.
+
+    Problem Constraints
+    1 <= |A| <= 105
+
+    Input Format
+    The first and the only argument is a string A.
+
+    Output Format
+    Return a single integer denoting the total number of ways to decode it modulo 109 + 7.
+
+    Example Input
+    Input 1:
+
+     A = "8"
+    Input 2:
+
+     A = "12"
+    :param arr:
+    :return:
+    """
+    if len(arr) == 0:
+        return 0
+    if arr[0] == 0:
+        return 0
+    n = len(arr)
+    result = [0 for _ in range(n+1)]
+    result[0] = result[1] = 1
+    for i in range(1, n):
+        v1 = int(arr[i:i+1])
+        v2 = int(arr[i-1:i+1])
+        if 0 < v1 <= 9:
+            result[i+1] = result[i]
+        if 10 <= v2 <= 26:
+            result[i+1] = result[i-1] + result[i+1]
+        if result[i+1] == 0:
+            return 0
+    answer = result[n]
+    return answer
+
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
     print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]
