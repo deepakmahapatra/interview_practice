@@ -563,8 +563,26 @@ def longest_common_subsequence(string1, string2):
     return dp[len(string1)-1][len(string2)-1]
 
 
+def longest_common_substring(string1, string2):
+    dp = [[0 for _ in range(len(string2))] for _ in range(len(string1))]
+    if not string1 or not string2:
+        return 0
+    if string1[0] == string2[0]:
+        dp[0][0] = 1
+    max_value = -1
+    for i in range(1, len(string1)):
+        for j in range(1, len(string2)):
+            if string1[i] == string2[j]:
+                dp[i][j] = dp[i-1][j-1]+1
+            else:
+                dp[i][j] = 0
+            max_value = max(max_value, dp[i][j])
+    return max_value
+
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
     print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
     print(longest_common_subsequence("abcde", "abe"))
+    print(longest_common_substring("abcdefghj", "abcefghj"))
 
