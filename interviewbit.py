@@ -580,9 +580,20 @@ def longest_common_substring(string1, string2):
     return max_value
 
 
+def max_sum_continuous_subarray(array):
+    dp = [0 for _ in range(len(array))]
+    dp[0] = array[0]
+    dp[1] = max(array[1]+dp[0], dp[0], dp[1])
+    for i in range(2, len(array)):
+        dp[i] = max(dp[i-1]+array[i], array[i])
+    return dp[len(array)-1]
+
+
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
     print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
     print(longest_common_subsequence("abcde", "abe"))
     print(longest_common_substring("abcdefghj", "abcefghj"))
+    print(max_sum_continuous_subarray([1, 2, 3, -9, 6, 7]))
 
