@@ -356,6 +356,144 @@ def possible_decodings(arr):
     return answer
 
 
+
+def match_regex(A, B):
+    m = len(A)
+    n = len(B)
+    if m - A.count('*') - n > 0:
+        return m - A.count('*') - n != 0
+    dp = [[False for _ in range(n+1)] for _ in range(m+1)]
+
+    dp[0][0] = True
+    for i in range(1, n+1):
+        if B[i-1] == "*":
+            dp[0][i] = dp[0][i-1]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if B[j] == "*":
+                dp[i][j] = dp[i-1][j] or dp[i][j-1]
+            elif B[j] == "?" or B[j] == A[i]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = False
+    return dp[m][n]
+
+
+# @param A : string
+# @return an integer
+def minCut(self, A):
+    """
+    Given a string A, partition A such that every substring of the partition is a palindrome.
+
+    Return the minimum cuts needed for a palindrome partitioning of A.
+
+
+
+    Input Format:
+
+    The first and the only argument contains the string A.
+    Output Format:
+
+    Return an integer, representing the answer as described in the problem statement.
+    Constraints:
+
+    1 <= length(A) <= 501
+    Examples:
+
+    Input 1:
+        A = "aba"
+
+    Output 1:
+        0
+
+    Explanation 1:
+    "aba" is already a palindrome, so no cuts are needed.
+    Input 2:
+    A = "aab"
+
+    Output 2:
+        1
+
+    Explanation 2:
+    Return 1 since the palindrome partitioning ["aa","b"] could be produced using 1 cut.
+    :param self:
+    :param A:
+    :return:
+    """
+    def isPalin(string):
+        for i in range(0, int(len(string)/2)):
+            if string[i] != string[len(string)-1-i]:
+                return False
+        return True
+
+    if len(A) == 0 or len(A) == 1:
+        return 0
+
+    min_cuts = [len(A) + 1] * (len(A) + 1)
+    min_cuts[0] = 0
+
+    for i in range(1, len(A) + 1):
+        if isPalin(A[0:i]):
+            min_cuts[i] = 0
+        else:
+            for j in range(0, i):
+                if isPalin(A[j:i]) and min_cuts[j] + 1 < min_cuts[i]:
+                    min_cuts[i] = min_cuts[j] + 1
+
+    return min_cuts[len(A)]
+
+
+def min_path(A):
+    """
+    Problem Description
+
+    Given a 2D integer array A of size M x N, you need to find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+
+    NOTE: You can only move either down or right at any point in time.
+
+
+
+    Input Format
+    First and only argument is an 2D integer array A of size M x N.
+
+
+
+    Output Format
+    Return a single integer denoting the minimum sum of a path from cell (1, 1) to cell (M, N).
+
+
+
+    Example Input
+    Input 1:
+
+     A = [  [1, 3, 2]
+            [4, 3, 1]
+            [5, 6, 1]
+         ]
+
+
+    Example Output
+    Output 1:
+
+     9
+    :param A:
+    :return:
+    """
+    dp = [[0 for _ in range(len(A[0]))] for _ in range(len(A))]
+    dp[0][0] = A[0][0]
+    for i in range(len(A)):
+        for j in range(len(A[0])):
+            if i==0 and j==0:
+                dp[0][0] = A[0][0]
+            elif i==0 and j>0:
+                dp[i][j] = dp[i][j-1] + A[i][j]
+            elif j>0 and i==0:
+                dp[i][j] = dp[i-1][j] + A[i][j]
+            else:
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + A[i][j]
+    return dp[len(A)-1][len(A[0])-1]
+
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
     print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]

@@ -35,7 +35,8 @@ class Solution(object):
     current_max = float('-inf')
 
     def max_path_sum(self, root):
-        self.max_path_sum_helper(root)
+        current_max = 0
+        self.max_path_sum_helper(root, current_max)
         return self.current_max
 
     def max_path_sum_helper(self, node):
@@ -67,3 +68,15 @@ class Solution(object):
                 last.right = TreeNode(value)
                 stack.append(last.right)
         return root
+
+    maxi = 0
+    def longest_path_sum(self, node):
+        if not node:
+            return 0
+        left = self.longest_path_sum(node.left)
+        right = self.longest_path_sum(node.right)
+
+        left = 0 if not left else 0 if left <0 else left
+        right = 0 if not right else 0 if right <0 else right
+        self.maxi = max(self.maxi, node.value + left + right)
+        return max(left, right) + node.value
