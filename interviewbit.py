@@ -357,26 +357,39 @@ def possible_decodings(arr):
 
 
 
-def match_regex(A, B):
-    m = len(A)
-    n = len(B)
-    if m - A.count('*') - n > 0:
-        return m - A.count('*') - n != 0
-    dp = [[False for _ in range(n+1)] for _ in range(m+1)]
+def match_regex(s, p):
+    # m = len(A)
+    # n = len(B)
+    # if m - A.count('*') - n > 0:
+    #     return m - A.count('*') - n != 0
+    # dp = [[False for _ in range(n+1)] for _ in range(m+1)]
+    #
+    # dp[0][0] = True
+    # for i in range(1, n+1):
+    #     if B[i-1] == "*":
+    #         dp[0][i] = dp[0][i-1]
+    # for i in range(1, m+1):
+    #     for j in range(1, n+1):
+    #         if B[j] == "*":
+    #             dp[i][j] = dp[i-1][j] or dp[i][j-1]
+    #         elif B[j] == "?" or B[j] == A[i]:
+    #             dp[i][j] = dp[i-1][j-1]
+    #         else:
+    #             dp[i][j] = False
+    # return dp[m][n]
 
-    dp[0][0] = True
-    for i in range(1, n+1):
-        if B[i-1] == "*":
-            dp[0][i] = dp[0][i-1]
-    for i in range(1, m+1):
-        for j in range(1, n+1):
-            if B[j] == "*":
-                dp[i][j] = dp[i-1][j] or dp[i][j-1]
-            elif B[j] == "?" or B[j] == A[i]:
-                dp[i][j] = dp[i-1][j-1]
-            else:
-                dp[i][j] = False
-    return dp[m][n]
+    if len(p) - p.count('*') > len(s):
+        return 0
+    DP = [True] + [False]*len(s)
+    for c in p:
+        if c == '*':
+            for n in range(1, len(s)+1):
+                DP[n] = DP[n-1] or DP[n]
+        else:
+            for n in range(len(s)-1, -1, -1):
+                DP[n+1] = DP[n] and (c == s[n] or c == '?')
+        DP[0] = DP[0] and c == '*'
+    return 1 if DP[-1] else 0
 
 
 # @param A : string
@@ -443,6 +456,7 @@ def minCut(self, A):
     return min_cuts[len(A)]
 
 
+
 def min_path(A):
     """
     Problem Description
@@ -494,7 +508,63 @@ def min_path(A):
     return dp[len(A)-1][len(A[0])-1]
 
 
+def max_price_cutting_rod(n, prices):
+    """
+    Given a rod of length n and prices contains price of length i in the array. Find maximum of total revenue you can
+    make by cutting and selling the rod
+    :param n:
+    :param prices:
+    :return:
+    """
+    R = [0] * (n+1)
+    for i in range(1, n+1):
+        max_val = -1
+        for j in range(1, i+1):
+            max_val = max(prices[j-1] + R[i-j], max_val)
+        R[i] = max_val
+    return R[n]
+
+
+def rob_a_house_rec(n, stashes):
+    if n==0:
+        return stashes[0]
+    max_val = -1
+    max_val = max(max_val, rob_a_house_rec(n-1, stashes))
+    for i in range(n-2, -1, -1):
+        max_val = max(max_val, rob_a_house_rec(i,stashes)+stashes[n-i])
+    return max_val
+
+
+def rob_a_house_db(n, stashes):
+    if n==0:
+        return stashes[0]
+    R = [0] * (n+1)
+    R[0] = stashes[0]
+    R[1] = max(stashes[0],stashes[1])
+    for i in range(2, n+1):
+        R[i] = max(R[i-1], stashes[i]+R[i-2]
+                   ) #(maximum of not stealing or stealing and adding all other pairs too)
+
+    return R[n]
+
+
+def longest_common_subsequence(string1, string2):
+    dp = [[0 for _ in range(len(string2))] for _ in range(len(string1))]
+    if not string1 or not string2:
+        return 0
+    if string1[0] == string2[0]:
+        dp[0][0] = 1
+    for i in range(1, len(string1)):
+        for j in range(1, len(string2)):
+            if string1[i] == string2[j]:
+                dp[i][j] = dp[i-1][j-1]+1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[len(string1)-1][len(string2)-1]
+
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
-    print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]
-))
+    print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
+    print(longest_common_subsequence("abcde", "abe"))
+
