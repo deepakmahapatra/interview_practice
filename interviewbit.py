@@ -589,6 +589,22 @@ def max_sum_continuous_subarray(array):
     return dp[len(array)-1]
 
 
+def jumps(array):
+    length = len(array)-1
+    jumps = 0
+    reachable = 0
+    next_reachable = 0
+    for i, x in enumerate(array):
+        if reachable >= length:
+            break
+        if reachable < i:
+            reachable = next_reachable
+            jumps += 1
+            if reachable < i:
+                break
+            next_reachable = max(next_reachable, i+x)
+    return jumps
+
 
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
