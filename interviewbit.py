@@ -601,7 +601,7 @@ def jumps(array):
             reachable = next_reachable
             jumps += 1
             if reachable < i:
-                break
+                return -1
             next_reachable = max(next_reachable, i+x)
     return jumps
 
