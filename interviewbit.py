@@ -606,6 +606,47 @@ def jumps(array):
     return jumps
 
 
+def numTrees(A):
+    """Given an integer A, how many structurally unique BST’s (binary search trees) exist that can store values 1…A?
+
+    Input Format:
+
+    The first and the only argument of input contains the integer, A.
+    Output Format:
+
+    Return an integer, representing the answer asked in problem statement.
+    Constraints:
+
+    1 <= A <= 18
+    Example:
+
+    Input 1:
+        A = 3
+
+    Output 1:
+        5
+
+    Explanation 1:
+
+       1         3     3      2      1
+        \       /     /      / \      \
+         3     2     1      1   3      2
+        /     /       \                 \
+       2     1         2                 3
+    """
+    dp = [0 for _ in range(A + 1)]
+    if A <= 0:
+        return 0
+    if A == 1:
+        return 1
+
+    dp[0] = 1
+    dp[1] = 1
+    for i in range(2, A + 1):
+        for j in range(1, i + 1):
+            dp[i] += dp[i - j] * dp[j - 1]
+    return dp[A]
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
     print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
