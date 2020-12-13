@@ -1,7 +1,8 @@
-def all_permutations(arr, unique:bool):
+def all_permutations(arr, unique: bool):
     result = []
-    all_permutations_helper(arr, 0, len(arr)-1, result, bool)
+    all_permutations_helper(arr, 0, len(arr)-1, result, unique)
     return result
+
 
 def all_permutations_helper(arr, l, r, result, unique):
     if l == r:
@@ -22,3 +23,20 @@ def should_swap(arr, l, current):
         if arr[i] == arr[current]:
             return False
     return True
+
+
+def all_paran(number_brackets_pair):
+    answer = []
+    all_paran_recur(number_brackets_pair, '', 0, 0, answer)
+    return answer
+
+
+def all_paran_recur(number_brackets_pair,curr, left, right, answer):
+    if left == number_brackets_pair and left == right:
+        answer.append(curr)
+        return
+    else:
+        if left < number_brackets_pair:
+            all_paran_recur(number_brackets_pair, curr + '(', left+1, right, answer)
+        if right < left:
+            all_paran_recur(number_brackets_pair, curr + ')', left, right+1, answer)
