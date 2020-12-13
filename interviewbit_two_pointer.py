@@ -95,3 +95,26 @@ class Solution:
             result.append(B[start_b])
             start_b += 1
         return result
+
+    @staticmethod
+    def threesum_closest(arr, target):
+        arr.sort()
+        closest = None
+        for i in range(len(arr)-2):
+            j, k = i+1, len(arr)-1
+            while k > j:
+                three_sum = arr[i] + arr[j] + arr[k]
+                if three_sum == target:
+                    return three_sum
+                if not closest or abs(target-closest) > abs(target-three_sum):
+                    closest = three_sum
+                if three_sum < target:
+                    j += 1
+                else:
+                    k -= 1
+        return closest
+
+
+
+
+
