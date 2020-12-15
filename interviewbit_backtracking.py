@@ -57,6 +57,33 @@ def all_subset_rec(arr, temp):
         a.append(arr[i])
         yield from all_subset_rec(arr[i+1:], a)
 
+# def braces(A):
+#     stack = []
+#     for i in range(len(A)):
+#         if A[i] in '(+-/*':
+#             stack.append(A[i])
+#         elif A[i] == ')':
+#             if stack.pop() == '(':
+#                 return 1
+#             stack.pop()
+#     return 0
+
+
+def nearest_smaller_less_than_i(arr):
+    result = []
+    stack = []
+    for num in arr:
+        while stack and stack[-1] >= num:
+            stack.pop()
+        if stack:
+            result.append(stack[-1])
+        else:
+            result.append(-1)
+        stack.append(num)
+    return result
+
 
 if __name__ == '__main__':
     print([i for i in all_subset([1,2,3])])
+    # print(braces('((2+3+5+6))'))
+    print(nearest_smaller_less_than_i([1,3,2,5,6]))
