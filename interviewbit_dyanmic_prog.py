@@ -1,4 +1,3 @@
-
 class Solution:
 
     @staticmethod
@@ -97,20 +96,20 @@ class Solution:
         left_max = 0
         right_max = 0
         left = 0
-        right = len(arr)-1
+        right = len(arr) - 1
         water = 0
         while left <= right:
             if arr[left] < arr[right]:
                 if arr[left] > left_max:
                     left_max = arr[left]
                 else:
-                    water += left_max-arr[left]
+                    water += left_max - arr[left]
                 left += 1
             else:
                 if arr[right] > right_max:
                     right_max = arr[right]
                 else:
-                    water += right_max-arr[right]
+                    water += right_max - arr[right]
                 right -= 1
         return water
 
@@ -158,9 +157,9 @@ class Solution:
         """
 
         def bisect(sub, val):
-            low, high = 0, len(sub)-1
+            low, high = 0, len(sub) - 1
             while low <= high:
-                mid = (low + high)//2
+                mid = (low + high) // 2
                 if val > sub[mid]:
                     low = mid + 1
                 elif val < sub[mid]:
@@ -168,6 +167,7 @@ class Solution:
                 else:
                     return mid
             return low
+
         res = []
         for item in array:
             pos = bisect(res, item)
@@ -234,15 +234,15 @@ def distinct_subsequences(sequence1, sequence2):
 def distinct_subsequences2(S, T):
     m = len(T)
     n = len(S)
-    mat = [[0 for _ in range(n+1)] for _ in range(m+1)]
-    for i in range(n+1):
+    mat = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+    for i in range(n + 1):
         mat[0][i] = 1
-    for i in range(1, m+1):
-        for j in range(1, n+1):
-            if T[i-1] != S[j-1]:
-                mat[i][j] = mat[i][j-1]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if T[i - 1] != S[j - 1]:
+                mat[i][j] = mat[i][j - 1]
             else:
-                mat[i][j] = mat[i-1][j-1] + mat[i][j-1]
+                mat[i][j] = mat[i - 1][j - 1] + mat[i][j - 1]
     return mat[m][n]
 
 
@@ -267,19 +267,19 @@ def unique_paths(input_arr):
     :param input_arr:
     :return:
     """
-    dp = [[0]*len(input_arr[0])]*len(input_arr)
-    # if input_arr[0][0] == 0:
-    #     dp[0][0] = 1
-    # for i in range(1, len(input_arr)):
-    #     if input_arr[i][0] == 0:
-    #         dp[i][0] = dp[i-1][0]
-    # for j in range(1, len(input_arr[0])):
-    #     if input_arr[0][j] == 0:
-    #         dp[0][j] = dp[0][j-1]
-    # for i in range(1, len(input_arr)):
-    #     for j in range(1, len(input_arr[0])):
-    #         if input_arr[i][j] == 0:
-    #             dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    dp = [[0] * len(input_arr[0])] * len(input_arr)
+    if input_arr[0][0] == 0:
+        dp[0][0] = 1
+    for i in range(1, len(input_arr)):
+        if input_arr[i][0] == 0:
+            dp[i][0] = dp[i - 1][0]
+    for j in range(1, len(input_arr[0])):
+        if input_arr[0][j] == 0:
+            dp[0][j] = dp[0][j - 1]
+    for i in range(1, len(input_arr)):
+        for j in range(1, len(input_arr[0])):
+            if input_arr[i][j] == 0:
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
     return dp
 
 
@@ -302,7 +302,7 @@ def max_product(arr):
     mpositive = 1
     ans = arr[0]
     for i in arr:
-        mnegative, mpositive = min(i, i*mpositive, i*mnegative), max(i, i*mnegative, i*mpositive)
+        mnegative, mpositive = min(i, i * mpositive, i * mnegative), max(i, i * mnegative, i * mpositive)
         ans = max(ans, mnegative, mpositive)
     return ans
 
@@ -341,20 +341,19 @@ def possible_decodings(arr):
     if arr[0] == 0:
         return 0
     n = len(arr)
-    result = [0 for _ in range(n+1)]
+    result = [0 for _ in range(n + 1)]
     result[0] = result[1] = 1
     for i in range(1, n):
-        v1 = int(arr[i:i+1])
-        v2 = int(arr[i-1:i+1])
+        v1 = int(arr[i:i + 1])
+        v2 = int(arr[i - 1:i + 1])
         if 0 < v1 <= 9:
-            result[i+1] = result[i]
+            result[i + 1] = result[i]
         if 10 <= v2 <= 26:
-            result[i+1] = result[i-1] + result[i+1]
-        if result[i+1] == 0:
+            result[i + 1] = result[i - 1] + result[i + 1]
+        if result[i + 1] == 0:
             return 0
     answer = result[n]
     return answer
-
 
 
 def match_regex(s, p):
@@ -380,14 +379,14 @@ def match_regex(s, p):
 
     if len(p) - p.count('*') > len(s):
         return 0
-    DP = [True] + [False]*len(s)
+    DP = [True] + [False] * len(s)
     for c in p:
         if c == '*':
-            for n in range(1, len(s)+1):
-                DP[n] = DP[n-1] or DP[n]
+            for n in range(1, len(s) + 1):
+                DP[n] = DP[n - 1] or DP[n]
         else:
-            for n in range(len(s)-1, -1, -1):
-                DP[n+1] = DP[n] and (c == s[n] or c == '?')
+            for n in range(len(s) - 1, -1, -1):
+                DP[n + 1] = DP[n] and (c == s[n] or c == '?')
         DP[0] = DP[0] and c == '*'
     return 1 if DP[-1] else 0
 
@@ -433,9 +432,10 @@ def minCut(self, A):
     :param A:
     :return:
     """
+
     def isPalin(string):
-        for i in range(0, int(len(string)/2)):
-            if string[i] != string[len(string)-1-i]:
+        for i in range(0, int(len(string) / 2)):
+            if string[i] != string[len(string) - 1 - i]:
                 return False
         return True
 
@@ -454,7 +454,6 @@ def minCut(self, A):
                     min_cuts[i] = min_cuts[j] + 1
 
     return min_cuts[len(A)]
-
 
 
 def min_path(A):
@@ -497,15 +496,15 @@ def min_path(A):
     dp[0][0] = A[0][0]
     for i in range(len(A)):
         for j in range(len(A[0])):
-            if i==0 and j==0:
+            if i == 0 and j == 0:
                 dp[0][0] = A[0][0]
-            elif i==0 and j>0:
-                dp[i][j] = dp[i][j-1] + A[i][j]
-            elif j>0 and i==0:
-                dp[i][j] = dp[i-1][j] + A[i][j]
+            elif i == 0 and j > 0:
+                dp[i][j] = dp[i][j - 1] + A[i][j]
+            elif j > 0 and i == 0:
+                dp[i][j] = dp[i - 1][j] + A[i][j]
             else:
-                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + A[i][j]
-    return dp[len(A)-1][len(A[0])-1]
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + A[i][j]
+    return dp[len(A) - 1][len(A[0]) - 1]
 
 
 def max_price_cutting_rod(n, prices):
@@ -516,34 +515,34 @@ def max_price_cutting_rod(n, prices):
     :param prices:
     :return:
     """
-    R = [0] * (n+1)
-    for i in range(1, n+1):
+    R = [0] * (n + 1)
+    for i in range(1, n + 1):
         max_val = -1
-        for j in range(1, i+1):
-            max_val = max(prices[j-1] + R[i-j], max_val)
+        for j in range(1, i + 1):
+            max_val = max(prices[j - 1] + R[i - j], max_val)
         R[i] = max_val
     return R[n]
 
 
 def rob_a_house_rec(n, stashes):
-    if n==0:
+    if n == 0:
         return stashes[0]
     max_val = -1
-    max_val = max(max_val, rob_a_house_rec(n-1, stashes))
-    for i in range(n-2, -1, -1):
-        max_val = max(max_val, rob_a_house_rec(i,stashes)+stashes[n-i])
+    max_val = max(max_val, rob_a_house_rec(n - 1, stashes))
+    for i in range(n - 2, -1, -1):
+        max_val = max(max_val, rob_a_house_rec(i, stashes) + stashes[n - i])
     return max_val
 
 
 def rob_a_house_db(n, stashes):
-    if n==0:
+    if n == 0:
         return stashes[0]
-    R = [0] * (n+1)
+    R = [0] * (n + 1)
     R[0] = stashes[0]
-    R[1] = max(stashes[0],stashes[1])
-    for i in range(2, n+1):
-        R[i] = max(R[i-1], stashes[i]+R[i-2]
-                   ) #(maximum of not stealing or stealing and adding all other pairs too)
+    R[1] = max(stashes[0], stashes[1])
+    for i in range(2, n + 1):
+        R[i] = max(R[i - 1], stashes[i] + R[i - 2]
+                   )  # (maximum of not stealing or stealing and adding all other pairs too)
 
     return R[n]
 
@@ -557,10 +556,10 @@ def longest_common_subsequence(string1, string2):
     for i in range(1, len(string1)):
         for j in range(1, len(string2)):
             if string1[i] == string2[j]:
-                dp[i][j] = dp[i-1][j-1]+1
+                dp[i][j] = dp[i - 1][j - 1] + 1
             else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-    return dp[len(string1)-1][len(string2)-1]
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[len(string1) - 1][len(string2) - 1]
 
 
 def longest_common_substring(string1, string2):
@@ -573,7 +572,7 @@ def longest_common_substring(string1, string2):
     for i in range(1, len(string1)):
         for j in range(1, len(string2)):
             if string1[i] == string2[j]:
-                dp[i][j] = dp[i-1][j-1]+1
+                dp[i][j] = dp[i - 1][j - 1] + 1
             else:
                 dp[i][j] = 0
             max_value = max(max_value, dp[i][j])
@@ -583,14 +582,14 @@ def longest_common_substring(string1, string2):
 def max_sum_continuous_subarray(array):
     dp = [0 for _ in range(len(array))]
     dp[0] = array[0]
-    dp[1] = max(array[1]+dp[0], dp[0], dp[1])
+    dp[1] = max(array[1] + dp[0], dp[0], dp[1])
     for i in range(2, len(array)):
-        dp[i] = max(dp[i-1]+array[i], array[i])
-    return dp[len(array)-1]
+        dp[i] = max(dp[i - 1] + array[i], array[i])
+    return dp[len(array) - 1]
 
 
 def jumps(array):
-    length = len(array)-1
+    length = len(array) - 1
     jumps = 0
     reachable = 0
     next_reachable = 0
@@ -602,7 +601,7 @@ def jumps(array):
             jumps += 1
             if reachable < i:
                 return -1
-            next_reachable = max(next_reachable, i+x)
+            next_reachable = max(next_reachable, i + x)
     return jumps
 
 
@@ -647,10 +646,11 @@ def numTrees(A):
             dp[i] += dp[i - j] * dp[j - 1]
     return dp[A]
 
+
 if __name__ == '__main__':
     print(distinct_subsequences2("abcde", "ab"))
-    print(unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1],[1, 0, 1, 0, 1, 0, 0, 0, 0, 0],[1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
+    print(
+        unique_paths([[0, 0, 0, 0, 0, 1, 1, 1, 0, 1], [1, 0, 1, 0, 1, 0, 0, 0, 0, 0], [1, 1, 1, 1, 0, 0, 0, 0, 1, 1]]))
     print(longest_common_subsequence("abcde", "abe"))
     print(longest_common_substring("abcdefghj", "abcefghj"))
     print(max_sum_continuous_subarray([1, 2, 3, -9, 6, 7]))
-

@@ -83,7 +83,34 @@ def nearest_smaller_less_than_i(arr):
     return result
 
 
+def word_break(s, word_dict):
+    memo = {}
+
+    return word_break_rec(s, word_dict, memo)
+
+
+def word_break_rec(s, word_dict, memo):
+    if s in memo:
+        return memo[s]
+    if not s:
+        return []
+    res = []
+    for word in word_dict:
+        if not s.startswith(word):
+            continue
+        if len(s) == len(word):
+            res.append(word)
+        else:
+            rest_strings = word_break_rec(s[len(word):], word_dict, memo)
+            for rest in rest_strings:
+                rest = word + ' ' + rest
+                res.append(rest)
+    memo[s] = res
+    return res
+
+
 if __name__ == '__main__':
     print([i for i in all_subset([1,2,3])])
     # print(braces('((2+3+5+6))'))
     print(nearest_smaller_less_than_i([1,3,2,5,6]))
+    print(word_break("thisisaword", {"this", "is", "a", "word", "dict"}))

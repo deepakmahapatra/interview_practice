@@ -15,6 +15,5 @@ def slidingMaximum(A, B):
     return result
 
 
-
 if __name__ == '__main__':
     slidingMaximum([10,9,10,11,6], 3)
