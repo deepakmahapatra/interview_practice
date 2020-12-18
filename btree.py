@@ -161,3 +161,138 @@ class Btree:
         while queue:
             previous_level, queue = queue, [child for prev in queue for child in [prev.left, prev.right] if child]
         return sum(node.val for node in previous_level)
+
+    # Definition for a  binary tree node
+    class TreeNode:
+        def __init__(self, x):
+            self.val = x
+            self.left = None
+            self.right = None
+
+    class Solution:
+        # @param A : root node of tree
+        # @param B : integer
+        # @return an integer
+        def t2Sum(self, A, B):
+            list_ = []
+
+            def inorder_helper(A, list_):
+                if not A:
+                    return
+                inorder_helper(A.left, list_)
+                list_.append(A.val)
+                inorder_helper(A.right, list_)
+
+            inorder_helper(A, list_)
+            left, right = 0, len(list_) - 1
+            while left < right:
+                if list_[left] + list_[right] == B:
+                    return 1
+                if list_[left] + list_[right] < B:
+                    left += 1
+                else:
+                    right -= 1
+            return 0
+
+        # @param A : root node of tree
+        # @param B : integer
+        # @return an integer
+        def kthsmallest(self, A, B):
+            """
+            Given a binary search tree, write a function to find the kth smallest element in the tree.
+
+            Example :
+
+            Input :
+              2
+             / \
+            1   3
+
+            and k = 2
+
+            Return : 2
+
+            As 2 is the second smallest element in the tree.
+            :param A:
+            :param B:
+            :return:
+            """
+            stack = [A]
+            counter = 0
+            while stack:
+                node = stack.pop()
+                if not node.left and not node.right:
+                    counter += 1
+                    if counter == B:
+                        return node.val
+                else:
+                    if node.right:
+                        stack.append(node.right)
+                        node.right = None
+                    stack.append(node)
+                    if node.left:
+                        stack.append(node.left)
+                        node.left = None
+
+        def kthsmallest_recursion(self, A, B):
+            self.B = B
+            def preorder(A):
+                if not A:
+                    return
+                res = preorder(A.left)
+                if res:
+                    return res.val
+                if self.B == 1:
+                    return A.val
+                self.B -= 1
+                return preorder(A.right)
+
+            return preorder(A)
+
+        def flatten_tree(self, A):
+            """
+            Given a binary tree, flatten it to a linked list in-place.
+            Example :
+            Given
+
+
+                     1
+                    / \
+                   2   5
+                  / \   \
+                 3   4   6
+            The flattened tree should look like:
+
+               1
+                \
+                 2
+                  \
+                   3
+                    \
+                     4
+                      \
+                       5
+                        \
+                         6
+            Note that the left child of all nodes should be NULL.
+
+            If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.
+
+            Now, if a node does not have left node, then our problem reduces to solving it for the node->right.
+            If it does, then the next element in the preorder traversal is the immediate left child. But if we make the immediate left child as the right child of the node, then the right subtree will be lost. So we figure out where the right subtree should go. In the preorder traversal, the right subtree comes right after the rightmost element in the left subtree.
+            So we figure out the rightmost element in the left subtree, and attach the right subtree as its right child. We make the left child as the right child now and move on to the next node.
+            :param A:
+            :return:
+            """
+            current = A
+            stack = []
+            while current or stack:
+                if current.right:
+                    stack.append(current.right)
+                if not current.left and stack:
+                    current.left = stack.pop()
+                if current.left:
+                    current.right = current.left
+                current.left = None
+                current = current.right
+            return A
