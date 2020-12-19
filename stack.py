@@ -44,6 +44,7 @@ def decode_string(string_):
             curr_str += i
     return curr_str
 
+
 def first_non_repeating_char(A):
     """
     Given a string A denoting a stream of lowercase alphabets. You have to make new string B.
