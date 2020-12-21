@@ -80,7 +80,7 @@ class Btree:
             sum = sum + (count_left_trees * count_right_trees) # number of subtrees possible with i as the root
         return sum
 
-    def print_nodes_in_range(self, node, high, low):
+    def print_nodes_in_range(self, node, low, high):
         """
         returns all nodes within a range in a binary search tree can be zero as well
         check every node to see if value is in between the range
@@ -110,7 +110,7 @@ class Btree:
         """
         if not node:
             return True
-        if max < node.data <= min:
+        if max < node.data or node.data <= min:
             return False
         return self.is_bst(node.left, min, node.data) and self.is_bst(node.right, node.data, max)
 
@@ -332,8 +332,11 @@ class Solution:
         If you notice carefully in the flattened tree, each node’s right child points to the next node of a pre-order traversal.
 
         Now, if a node does not have left node, then our problem reduces to solving it for the node->right.
-        If it does, then the next element in the preorder traversal is the immediate left child. But if we make the immediate left child as the right child of the node, then the right subtree will be lost. So we figure out where the right subtree should go. In the preorder traversal, the right subtree comes right after the rightmost element in the left subtree.
-        So we figure out the rightmost element in the left subtree, and attach the right subtree as its right child. We make the left child as the right child now and move on to the next node.
+        If it does, then the next element in the preorder traversal is the immediate left child. But if we make the immediate left child as the right child of the node, then the right subtree will be lost.
+        So we figure out where the right subtree should go. In the preorder traversal, the right subtree comes right
+        after the rightmost element in the left subtree.
+        So we figure out the rightmost element in the left subtree, and
+        attach the right subtree as its right child. We make the left child as the right child now and move on to the next node.
         :param A:
         :return:
         """
@@ -405,3 +408,161 @@ class Solution:
                 node_val = stack.pop()
             stack.append(item)
         return 1
+
+    def merge_two_btree(self, A, B):
+        # @param A : root node of tree
+        # @param B : root node of tree
+        # @return the root node in the tree
+        """
+        Problem Description
+        Given two Binary Trees A and B, you need to merge them in a single binary tree.
+        The merge rule is that if two nodes overlap, then sum of node values is the new value of the merged node.
+        Otherwise, the non-null node will be used as the node of new tree.
+        Problem Constraints
+        1 <= Number of Nodes in A , B <= 105
+        Input Format
+        First argument is an pointer to the root of binary tree A.
+        Second argument is an pointer to the root of binary tree B.
+        Output Format
+        Return a pointer to the root of new binary tree.
+        Example Input
+        Input 1:
+         A =   2
+
+              / \
+
+             1   4
+
+            /
+
+           5
+
+
+        B =   3
+              / \
+              6  1
+              \   \
+               2   7
+
+        Input 2:
+
+         A =   12
+
+              / \
+
+             11  14
+
+
+        B =   3
+              / \
+              6  1
+
+
+
+        Example Output
+        Output 1:
+
+             5
+            / \
+           7   5
+          / \   \
+         5   2   7
+        Output 2:
+
+           15
+          / \
+         17  15
+        :param A:
+        :param B:
+        :return:
+        """
+        if not A:
+            return B
+        if not B:
+            return A
+        A.val += B.val
+        A.left = self.merge_two_btree(A.left, B.left)
+        A.right = self.merge_two_btree(A.right, B.right)
+        return A
+
+    def remove_half_nodes(self, A):
+        """
+        Problem Description
+
+        Given a binary tree A with N nodes.
+
+        You have to remove all the half nodes and return the final binary tree.
+
+        NOTE:
+
+        Half nodes are nodes which have only one child.
+        Leaves should not be touched as they have both children as NULL.
+
+
+        Problem Constraints
+        1 <= N <= 105
+
+
+
+        Input Format
+        First and only argument is an pointer to the root of binary tree A.
+
+
+
+        Output Format
+        Return a pointer to the root of the new binary tree.
+
+
+
+        Example Input
+        Input 1:
+
+                   1
+                 /   \
+                2     3
+               /
+              4
+
+        Input 2:
+
+                    1
+                  /   \
+                 2     3
+                / \     \
+               4   5     6
+
+
+        Example Output
+        Output 1:
+
+                   1
+                 /    \
+                4      3
+        Output 2:
+
+                    1
+                  /   \
+                 2     6
+                / \
+
+               4   5
+
+
+
+        Example Explanation
+        Explanation 1:
+
+         The only half node present in the tree is 2 so we will remove this node.
+        Explanation 2:
+
+         The only half node present in the tree is 3 so we will remove this node.
+        """
+        if not A:
+            return
+        A.left = self.remove_half_nodes(A.left)
+        A.right = self.remove_half_nodes(A.right)
+        if bool(A.left) == bool(A.right):
+            return A
+        if not A.left:
+            return A.right
+        return A.left

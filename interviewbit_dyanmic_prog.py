@@ -541,8 +541,7 @@ def rob_a_house_db(n, stashes):
     R[0] = stashes[0]
     R[1] = max(stashes[0], stashes[1])
     for i in range(2, n + 1):
-        R[i] = max(R[i - 1], stashes[i] + R[i - 2]
-                   )  # (maximum of not stealing or stealing and adding all other pairs too)
+        R[i] = max(R[i - 1], stashes[i] + R[i - 2])  # (maximum of not stealing or stealing and adding all other pairs too)
 
     return R[n]
 
