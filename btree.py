@@ -566,3 +566,38 @@ class Solution:
         if not A.left:
             return A.right
         return A.left
+
+    def max_binary_tree(self, nums):
+        """
+        You are given an integer array nums with no duplicates. A maximum binary tree can be built recursively from nums using the following algorithm:
+
+        Create a root node whose value is the maximum value in nums.
+        Recursively build the left subtree on the subarray prefix to the left of the maximum value.
+        Recursively build the right subtree on the subarray suffix to the right of the maximum value.
+        Return the maximum binary tree built from nums.
+        :param nums:
+        :return:
+        """
+        if not nums:
+            return
+        stack = []
+        for num in nums:
+            node = TreeNode(num)
+            while stack and stack[-1].val < num:
+                node.left = stack.pop()
+            if stack:
+                stack[-1].right = node
+
+            stack.append(node)
+        return stack[0]
+
+    def bst_from_preorder(self, items):
+        return self.bst_from_preorder_helper(items, float('-inf'))
+
+    def bst_from_preorder_helper(self, items, bound):
+        if not items or items[-1] > bound:
+            return
+        node = TreeNode(items.pop())
+        node.left = self.bst_from_preorder_helper(items, node.val)
+        node.right = self.bst_from_preorder_helper(items, bound)
+        return node
