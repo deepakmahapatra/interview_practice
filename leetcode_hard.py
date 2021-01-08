@@ -36,3 +36,7 @@ class UniquePath:
             res += self.backtrack(i, j, count-1, m, n, grid)
         grid[start_x][start_y] = 0
         return res
+
+    def median_of_two_sorted_array(self, input1, input2):
+        pass
+

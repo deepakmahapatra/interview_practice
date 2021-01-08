@@ -287,20 +287,20 @@ class Solution:
                     stack.append(node.left)
                     node.left = None
 
+    def preorderhelper(self, A):
+        if not A:
+            return
+        res = self.preorderhelper(A.left)
+        if res:
+            return res.val
+        if self.B == 1:
+            return A.val
+        self.B -= 1
+        return self.preorderhelper(A.right)
+
     def kthsmallest_recursion(self, A, B):
         self.B = B
-        def preorder(A):
-            if not A:
-                return
-            res = preorder(A.left)
-            if res:
-                return res.val
-            if self.B == 1:
-                return A.val
-            self.B -= 1
-            return preorder(A.right)
-
-        return preorder(A)
+        return self.preorderhelper(A)
 
     def flatten_tree(self, A):
         """
