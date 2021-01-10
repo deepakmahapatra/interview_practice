@@ -37,6 +37,28 @@ class UniquePath:
         grid[start_x][start_y] = 0
         return res
 
-    def median_of_two_sorted_array(self, input1, input2):
-        pass
+    def median_of_two_sorted_array(self, nums1, nums2):
+        if len(nums1) > len(nums2):
+            return self.median_of_two_sorted_array(nums2, nums1)
+        x = len(nums1)
+        y = len(nums2)
+        low = 0
+        high = x
+        while low <= high:
+            part_x = (low + high)//2
+            part_y = (x+y+1) - part_x
 
+            max_left_x = float('-inf')  if part_x ==0 else nums1[part_x-1]
+            min_right_x = float('inf')  if part_x ==x else nums1[part_x]
+
+            max_left_y = float('-inf')  if part_y ==0 else nums2[part_y-1]
+            min_right_y = float('inf')  if part_y ==y else nums2[part_y]
+
+            if max_left_x <= min_right_y and max_left_y <= min_right_x:
+                if (x+y) % 2 == 0:
+                    return (max(max_left_y, max_left_x) + min(min_right_x, min_right_y))/2.0
+                return max(max_left_y, max_left_x)
+            elif max_left_x > min_right_y:
+                high = part_x - 1
+            else:
+                low = part_x + 1

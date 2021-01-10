@@ -1,3 +1,6 @@
+from linked_list_cycle import ListNode
+
+
 def detectCycle(A):
     slow = A
     fast = A
@@ -28,4 +31,24 @@ def is_palindrome(head):
     return not rev
 
 
+def remove_zero_sum(link):
+    dummy = ListNode(None)
+    dummy.next = link
 
+    cumulative_sum = 0
+    hashmap = {cumulative_sum: dummy}
+    while link:
+        cumulative_sum += link.val
+
+        if cumulative_sum in hashmap:
+            popping_index = hashmap[cumulative_sum].next_
+            sum = cumulative_sum
+            while popping_index != link:
+                sum += popping_index.val
+                del hashmap[sum]
+                popping_index = popping_index.next_
+            hashmap[cumulative_sum].next_ = link.next_
+        else:
+            hashmap[cumulative_sum] = link
+        link = link.next
+    return dummy.next_
