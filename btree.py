@@ -399,7 +399,7 @@ class Solution:
         :param items:
         :return:
         """
-        stack =[]
+        stack = []
         node_val = float('-inf')
         for item in items:
             if item < node_val:

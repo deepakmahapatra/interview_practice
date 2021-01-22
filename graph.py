@@ -76,6 +76,24 @@ def breadth_first_traversal(graph: AdjacencyMatrixGraph, current_vertex):
                 queue.append(v)
 
 
+def find_num_islands(grid):
+    count = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 1:
+                dfs_island_helper(grid, i, j)
+                count += 1
+    return count
+
+def dfs_island_helper(grid, i, j):
+    if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or grid[i][j]!=1:
+        return
+    grid[i][j] = '#'
+    dfs_island_helper(grid, i+1, j)
+    dfs_island_helper(grid, i, j+1)
+    dfs_island_helper(grid, i, j-1)
+    dfs_island_helper(grid, i-1, j)
+
 def topological_sort():
     pass
 
@@ -88,8 +106,9 @@ if __name__ == '__main__':
     graph.add_edge(1, 2)
     graph.add_edge(2, 5)
     graph.add_edge(4, 5)
-    depth_first_traversal(graph, 1, set())
+    # depth_first_traversal(graph, 1, set())
     print()
-    depth_first_traversal_non_recursive(graph, 1)
-    print()
-    breadth_first_traversal(graph, 1)
+    # depth_first_traversal_non_recursive(graph, 1)
+    # breadth_first_traversal(graph, 1)
+    print(find_num_islands([[1, 1, 0, 0 , 0], [1, 1,  0, 1, 0]]))
+    print(find_num_islands([[1, 1, 0, 0 , 0, 0], [1, 1,  0, 1, 0, 0], [1, 1,  0, 1, 0, 1]]))

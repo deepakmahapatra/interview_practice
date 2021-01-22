@@ -46,7 +46,8 @@ if __name__ == '__main__':
     print('Range sum from pos {} to pos {}: {}'.format(1, 5, bit.range_sum(1, 5)))
     print()
 
-class SegementMaxTree:
+
+class SegmentMaxTree:
     def __init__(self, list_):
         self.n = len(list_)
         self.array = [0] * self.n + list_
@@ -56,8 +57,8 @@ class SegementMaxTree:
     def update(self, idx, val):
         idx += self.n
         self.array[idx] = val
-        while idx >0:
-            idx//=2
+        while idx > 0:
+            idx //= 2
             self.array[idx] = max(self.array[2*idx], self.array[2*idx+1])
 
     def range_max(self, index1, index2):
@@ -65,11 +66,11 @@ class SegementMaxTree:
         index2 += self.n
         maxi = self.array[index1]
         while index1 < index2:
-            if index1 %2:
+            if index1 % 2:
                 maxi = max(maxi, self.array[index1])
-                index1+=1
-            if index2 %2:
-                index2 -=1
+                index1 += 1
+            if index2 % 2:
+                index2 -= 1
                 maxi = max(maxi, self.array[index2])
 
             index2 //= 2

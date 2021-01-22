@@ -14,6 +14,7 @@ def build_lps(patterns):
     print(lps)
     return lps
 
+
 def pattern_match(text, pattern):
     m = len(text)
     n = len(pattern)
@@ -34,7 +35,10 @@ def pattern_match(text, pattern):
                 else:
                     i += 1
     return res
+
+
 if __name__ == '__main__':
     pattern = "abcabc"
     text = "adefabcabdabcabckghdkabfabcabc"
     print(pattern_match(text, pattern))
+

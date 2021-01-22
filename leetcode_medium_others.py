@@ -23,3 +23,4 @@ def findAndReplacePattern(words, pattern):
 
 if __name__ == '__main__':
     print(findAndReplacePattern(["abc","deq","mee","aqq","dkd","ccc"], "abb"))
+    print(findAndReplacePattern(["abc", "deq", "mee", "aqq", "dkd", "ccc"], "abb"))

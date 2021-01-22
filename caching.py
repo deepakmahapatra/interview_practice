@@ -19,7 +19,7 @@ class LFUCache:
         if key not in self.key_to_node:
             return None
         node = self.key_to_node[key]
-        del self.count_to_node[node][key]
+        del self.count_to_node[node.count][key]
 
         if not self.count_to_node[node.count]:
             del self.count_to_node[node.count]
