@@ -153,7 +153,7 @@ def longest_palindrome_substring(s):
         for i in range(j-1):
             if s[i] == s[j] and dp[i+1][j-1]:
                 dp[i][j] = True
-                if longest < j-1+1:
+                if longest < j-i+1:
                     longest = j-i+1
                     ans = s[i: j+1]
     return ans
