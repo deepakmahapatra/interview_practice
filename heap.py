@@ -1,3 +1,6 @@
+import heapq
+
+
 class BaseHeap:
     def __init__(self, maxsize):
         self.maxsize = maxsize
@@ -242,6 +245,22 @@ if __name__ == '__main__':
     print(result)
     print(result2)
 
+def num_meeting_rooms_required(meetings):
+    """
+    given a number of meeting intervals find number of rooms required.
+    One room can handle one meeting at a time
+    Args:
+        meetings:
 
+    Returns:
 
-
+    """
+    free_rooms = []
+    if not meetings:
+        return 0
+    heapq.heappush(free_rooms, meetings[0][1])
+    for meet in meetings[1:]:
+        if free_rooms[0] < meet[0]:
+            heapq.heappop(free_rooms)
+        heapq.heappush(meet[1])
+    return len(free_rooms)

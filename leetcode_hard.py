@@ -62,3 +62,24 @@ class UniquePath:
                 high = part_x - 1
             else:
                 low = part_x + 1
+
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        result = []
+        current = []
+        char_so_far = 0
+        for word in words:
+            if char_so_far + len(word) + len(current) > maxWidth:
+                for i in range(maxWidth - char_so_far):
+                    current[i % (len(current) - 1 or 1)] += " "
+                result.append("".join(current))
+                current, char_so_far = [], 0
+            current.append(word)
+            char_so_far += len(word)
+
+        final = " ".join([x.rstrip() for x in current])
+
+        if maxWidth - len(final) > 0:
+            final += " " * (maxWidth - len(final))
+        result.append(final)
+        return result
+
