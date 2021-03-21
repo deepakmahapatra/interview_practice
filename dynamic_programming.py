@@ -32,6 +32,27 @@ def num_decodings(string):
     return dp[len(string)]
 
 
+def maximum_square_area_with_1(matrix):
+    """
+    given a matrix find out the maximum square area that can be formed with cells 1
+    Args:
+        matrix:
+
+    Returns:
+
+    """
+    rows = len(matrix)
+    cols = len(matrix[0]) if rows else 0
+    answer = 0
+    dp = [[0 for _ in range(cols+1)] * (rows+1)]
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[i][j] == '1':
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i][j]) + 1
+                answer = max(answer, dp[i][j])
+
+    return answer * answer
+
 if __name__ == '__main__':
     print(count_no_of_ways_to_climb_stairs(5))
     print(count_no_of_ways_to_climb(5))

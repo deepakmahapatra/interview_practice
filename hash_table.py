@@ -1,3 +1,4 @@
+import collections
 from collections import defaultdict
 
 
@@ -29,3 +30,24 @@ def prefix(A):
                 break
         res.append(rest)
     return res
+
+def minDeletions(s: str) -> int:
+    """
+    given a string s make the frequencies of the characters unique by deleting minimum number of elements
+    Args:
+        s:
+
+    Returns:
+
+    """
+    freq = collections.defaultdict(int)
+    count = 0
+    for item in s:
+        freq[item] += 1
+    unique_freq = set()
+    for key, curr_count in freq.items():
+        while curr_count in unique_freq and curr_count > 0:
+            curr_count -= 1
+            count += 1
+        unique_freq.add(curr_count)
+    return count
