@@ -110,7 +110,7 @@ class Btree:
         """
         if not node:
             return True
-        if max < node.data or node.data <= min:
+        if max < node.data <= min:
             return False
         return self.is_bst(node.left, min, node.data) and self.is_bst(node.right, node.data, max)
 

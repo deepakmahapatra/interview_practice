@@ -17,12 +17,42 @@ def all_permutations_helper(arr, l, r, result, unique):
             all_permutations_helper(arr, l+1, r, result, unique)
             arr[i], arr[l] = arr[l], arr[i]
 
+def next_permutation(nums):
+    i = len(nums)-2
+    while i >=0 and nums[i+1] <= nums[i]:
+        i-=1
+    if i >= 0:
+        j = len(nums) - 1
+        while j >= 0 and nums[i] >= nums[j]:
+            j-=1
+        nums[i], nums[j] = nums[j], nums[i]
+    j = len(nums) - 1
+    i += 1
+    while i <j:
+        nums[i], nums[j] = nums[j], nums[i]
+        i += 1
+        j -= 1
+    return nums
+
 
 def should_swap(arr, l, current):
     for i in range(l, current):
         if arr[i] == arr[current]:
             return False
     return True
+
+
+def combination(n, k):
+    def recur(output, n, k, first=1, curr=[]):
+        if len(curr) == k:
+            output.append(curr[:])
+            for i in range(first, n+1):
+                curr.append(i)
+                recur(output, n, k, i, curr)
+                curr.pop(i)
+        output = []
+        recur(output, n, k)
+        return output
 
 
 def all_paran(number_brackets_pair):
